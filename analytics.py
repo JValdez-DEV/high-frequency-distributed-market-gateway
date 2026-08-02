@@ -1,7 +1,9 @@
 import sqlite3
 import pandas as pd
 
-DB_FILE = "/root/trade_hunter/active_trades.db"
+from env_config import BASE_DIR, get_env, get_path
+
+DB_FILE = get_path(get_env('DB_FILE', default='active_trades.db'))
 
 def generate_report():
     try:

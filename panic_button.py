@@ -6,10 +6,12 @@ import ccxt.async_support as ccxt_async
 from alpaca.trading.client import TradingClient
 from dotenv import load_dotenv
 
-load_dotenv()
+from env_config import BASE_DIR, get_env, get_path
 
-DB_FILE = "/root/trade_hunter/active_trades.db"
-WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
+load_dotenv(dotenv_path=BASE_DIR / '.env')
+
+DB_FILE = get_path(get_env('DB_FILE', default='active_trades.db'))
+WEBHOOK_URL = get_env("DISCORD_WEBHOOK_URL")
 
 ROUTING_MATRIX = [
     "TSLA", "NVDA", "AMD",
@@ -40,7 +42,7 @@ def wipe_database():
 
 async def liquidate_kraken():
     print("[*] Liquidating Kraken positions...")
-    kraken = ccxt_async.kraken({'apiKey': os.getenv('KRAKEN_KEY'), 'secret': os.getenv('KRAKEN_SECRET')})
+    kraken = ccxt_async.kraken({'apiKey': get_env('KRAKEN_API_KEY'), 'secret': get_env('KRAKEN_API_SECRET')})
     try:
         balance = await kraken.fetch_balance()
         for symbol in [s for s in ROUTING_MATRIX if '/' in s]:
@@ -58,7 +60,7 @@ async def liquidate_kraken():
 def liquidate_alpaca():
     print("[*] Liquidating Alpaca positions and cancelling pending orders...")
     try:
-        client = TradingClient(os.getenv('ALPACA_KEY'), os.getenv('ALPACA_SECRET'), paper=True)
+        client = TradingClient(get_env('ALPACA_API_KEY'), get_env('ALPACA_API_SECRET'), paper=True)
         cancel_statuses = client.close_all_positions(cancel_orders=True)
         for order in cancel_statuses:
             print(f"    -> Order dispatched for {order.symbol}")

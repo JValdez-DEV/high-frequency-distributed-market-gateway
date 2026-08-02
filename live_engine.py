@@ -10,7 +10,9 @@ import pandas_ta as ta
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
+from env_config import BASE_DIR, get_env, get_path
+
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 # --- V3.6 PRODUCTION CONFIGURATION ---
 DEFAULT_ROUTING = {
@@ -24,15 +26,15 @@ DEFAULT_ROUTING = {
 }
 RISK_PCT = 0.01
 REWARD_MULTIPLIER = 4.0
-DISCORD_URL = os.getenv("DISCORD_WEBHOOK_URL")
+DISCORD_URL = get_env("DISCORD_WEBHOOK_URL")
 
 # --- SYSTEM FILES ---
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-STATS_FILE = "/root/trade_hunter/daily_stats.json"
-LEDGER_FILE = "/root/trade_hunter/kraken_paper_ledger.json"
-ACTIVE_TRADES_FILE = "/root/trade_hunter/active_trades.json"
-MASTER_CSV_FILE = "/root/trade_hunter/master_trade_log.csv"
-CONFIG_FILE = os.path.join(SCRIPT_DIR, "ticker_config.json")
+SCRIPT_DIR = BASE_DIR
+STATS_FILE = get_path(get_env('STATS_FILE', default='daily_stats.json'))
+LEDGER_FILE = get_path(get_env('LEDGER_FILE', default='kraken_paper_ledger.json'))
+ACTIVE_TRADES_FILE = get_path(get_env('ACTIVE_TRADES_FILE', default='active_trades.json'))
+MASTER_CSV_FILE = get_path(get_env('MASTER_CSV_FILE', default='master_trade_log.csv'))
+CONFIG_FILE = SCRIPT_DIR / "ticker_config.json"
 # -------------------------------------
 
 # --- KILL SWITCH CONFIG ---
@@ -45,7 +47,7 @@ def utc_date_str():
 
 
 def ensure_state_dir():
-    os.makedirs(os.path.dirname(STATS_FILE), exist_ok=True)
+    os.makedirs(os.path.dirname(str(STATS_FILE)), exist_ok=True)
 
 
 def load_ticker_config():
@@ -219,8 +221,8 @@ class LiveVelocityEngine:
             self.symbol = ticker
 
         exchange_class = getattr(ccxt, self.exchange_id)
-        api_key = os.getenv(f"{self.exchange_id.upper()}_API_KEY")
-        api_secret = os.getenv(f"{self.exchange_id.upper()}_API_SECRET")
+        api_key = get_env(f"{self.exchange_id.upper()}_API_KEY")
+        api_secret = get_env(f"{self.exchange_id.upper()}_API_SECRET")
 
         exchange_params = {"enableRateLimit": True}
         if api_key and api_secret:
@@ -363,7 +365,7 @@ class LiveVelocityEngine:
     def fetch_account_balance(self):
         try:
             if self.exchange_id == "kraken" and os.getenv("KRAKEN_MODE") == "PAPER":
-                return float(os.getenv("KRAKEN_PAPER_BAL", 10000.0))
+                return float(get_env("KRAKEN_PAPER_BAL", default="10000.0"))
             balance_data = self.exchange.fetch_balance()
             return float(balance_data["total"].get("USD", 0.0))
         except Exception:
@@ -374,7 +376,7 @@ class LiveVelocityEngine:
             if check_kill_switch(self.fetch_account_balance()):
                 return
 
-            is_kraken_paper = self.exchange_id == "kraken" and os.getenv("KRAKEN_MODE") == "PAPER"
+            is_kraken_paper = self.exchange_id == "kraken" and get_env("KRAKEN_MODE") == "PAPER"
             mode = "PAPER" if is_kraken_paper else "LIVE"
             balance = self.fetch_account_balance()
             if balance < 1.0:

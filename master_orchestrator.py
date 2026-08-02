@@ -9,11 +9,12 @@ from alpaca.data.live import StockDataStream, CryptoDataStream
 from alpaca.data.models import Bar
 from alpaca.trading.client import TradingClient
 
-ENV_PATH = '/root/trade_hunter/.env'
-load_dotenv(ENV_PATH)
-API_KEY = os.getenv("ALPACA_API_KEY")
-SECRET_KEY = os.getenv("ALPACA_API_SECRET")
-DISCORD_WEBHOOK = os.getenv("DISCORD_WEBHOOK_URL")
+from env_config import BASE_DIR, get_env, get_path
+
+load_dotenv(dotenv_path=BASE_DIR / '.env')
+API_KEY = get_env("ALPACA_API_KEY")
+SECRET_KEY = get_env("ALPACA_API_SECRET")
+DISCORD_WEBHOOK = get_env("DISCORD_WEBHOOK_URL")
 
 if not API_KEY or not SECRET_KEY:
     raise SystemExit("[CRITICAL] Credentials missing from .env")
@@ -22,11 +23,11 @@ if not API_KEY or not SECRET_KEY:
 trading_client = TradingClient(API_KEY, SECRET_KEY, paper=True)
 
 # --- LOAD CONFIGURATIONS ---
-with open('/root/trade_hunter/crypto_config.json', 'r') as f:
+with open(get_path('crypto_config.json'), 'r') as f:
     CRYPTO_CONFIG = json.load(f)
 
 try:
-    with open('/root/trade_hunter/equity_config.json', 'r') as f:
+    with open(get_path('equity_config.json'), 'r') as f:
         EQUITY_CONFIG = json.load(f)
 except FileNotFoundError:
     EQUITY_CONFIG = {}

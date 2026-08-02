@@ -9,11 +9,13 @@ from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import GetOrdersRequest
 from alpaca.trading.enums import QueryOrderStatus, OrderSide
 
+from env_config import BASE_DIR, get_env, get_path
+
 # --- INITIALIZATION ---
-load_dotenv('/root/trade_hunter/.env')
-API_KEY = os.getenv("ALPACA_API_KEY")
-SECRET_KEY = os.getenv("ALPACA_API_SECRET")
-DISCORD_WEBHOOK = os.getenv("DISCORD_WEBHOOK_URL")
+load_dotenv(dotenv_path=BASE_DIR / '.env')
+API_KEY = get_env("ALPACA_API_KEY")
+SECRET_KEY = get_env("ALPACA_API_SECRET")
+DISCORD_WEBHOOK = get_env("DISCORD_WEBHOOK_URL")
 
 client = TradingClient(API_KEY, SECRET_KEY, paper=True)
 
@@ -22,15 +24,15 @@ WIN_RATE_THRESHOLD = 60.0
 MIN_TRADES_REQUIRED = 20   
 PROP_FIRM_DD_LIMIT = 5.0      # Hard exchange limit
 CIRCUIT_BREAKER_LIMIT = 4.0    # Tactical safety tripwire
-HALT_FILE = '/root/trade_hunter/.halt'
-LEDGER_PATH = '/root/trade_hunter/strategy_ledger.json'
+HALT_FILE = get_path(get_env('HALT_FILE', default='.halt'))
+LEDGER_PATH = get_path(get_env('LEDGER_PATH', default='strategy_ledger.json'))
 
 def load_current_parameters():
     params = {"crypto": {}, "equity": {}}
     try:
-        with open('/root/trade_hunter/crypto_config.json', 'r') as f:
+        with open(get_path('crypto_config.json'), 'r') as f:
             params["crypto"] = json.load(f)
-        with open('/root/trade_hunter/equity_config.json', 'r') as f:
+        with open(get_path('equity_config.json'), 'r') as f:
             params["equity"] = json.load(f)
     except FileNotFoundError:
         pass

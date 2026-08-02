@@ -8,7 +8,7 @@ from alpaca.data.live import StockDataStream, CryptoDataStream
 from alpaca.data.models import Bar
 from alpaca.trading.client import TradingClient
 
-ENV_PATH = '/root/trade_hunter/.env'
+ENV_PATH = '.env'
 load_dotenv(ENV_PATH)
 API_KEY = os.getenv("ALPACA_API_KEY")
 SECRET_KEY = os.getenv("ALPACA_API_SECRET")
@@ -23,11 +23,11 @@ stock_stream = StockDataStream(API_KEY, SECRET_KEY)
 crypto_stream = CryptoDataStream(API_KEY, SECRET_KEY)
 
 # --- LOAD BIFURCATED DICTIONARIES ---
-with open('/root/trade_hunter/crypto_config.json', 'r') as f:
+with open('crypto_config.json', 'r') as f:
     CRYPTO_CONFIG = json.load(f)
 
 try:
-    with open('/root/trade_hunter/equity_config.json', 'r') as f:
+    with open('equity_config.json', 'r') as f:
         EQUITY_CONFIG = json.load(f)
 except FileNotFoundError:
     EQUITY_CONFIG = {}

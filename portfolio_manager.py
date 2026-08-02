@@ -3,7 +3,9 @@ import pandas_ta as ta
 import os
 
 # --- PORTFOLIO CONFIGURATION ---
-DATA_DIR = "/root/trade_hunter/massive_data"
+from env_config import get_env, get_path
+
+DATA_DIR = get_path(get_env('DATA_DIR', default='massive_data'))
 ATR_RISK_MULTIPLIER = 1.5  
 REWARD_MULTIPLIER = 4.0    
 

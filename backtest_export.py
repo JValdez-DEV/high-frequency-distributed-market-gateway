@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+from env_config import BASE_DIR, get_env, get_path
+
 # Configuration for the "100 to 6400" visualization
 STARTING_BALANCE = 100.00
 RISK_PER_TRADE_R = 1.0  # Each trade risks 1 unit of 'R'
@@ -9,8 +11,8 @@ REWARD_RATIO = 4.0      # Hybrid Percoco 1:4 Target
 
 def generate_excel_log():
     # Path to your historical backtest source or ledger
-    ledger_path = '/root/trade_hunter/trade_ledger.csv'
-    output_path = '/root/trade_hunter/backtest_visualized.csv'
+    ledger_path = get_path(get_env('LEDGER_FILE', default='trade_ledger.csv'))
+    output_path = get_path(get_env('BACKTEST_OUTPUT', default='backtest_visualized.csv'))
     
     if not pd.io.common.file_exists(ledger_path):
         print("[!] No ledger found to export.")

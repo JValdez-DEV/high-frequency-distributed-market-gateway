@@ -5,10 +5,12 @@ import os
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
-load_dotenv()
+from env_config import BASE_DIR, get_env, get_path
+
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 # Initialize Alpaca (Used for deep historical data for both markets)
-api = tradeapi.REST(os.getenv('ALPACA_KEY'), os.getenv('ALPACA_SECRET'), 'https://paper-api.alpaca.markets', 'v2')
+api = tradeapi.REST(get_env('ALPACA_API_KEY'), get_env('ALPACA_API_SECRET'), get_env('ALPACA_BASE_URL', 'https://paper-api.alpaca.markets'), 'v2')
 
 # THE FULL SENTINEL GRID
 # Stocks: High-volatility tech and index trackers

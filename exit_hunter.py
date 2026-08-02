@@ -4,10 +4,12 @@ from dotenv import load_dotenv
 import requests
 import alpaca_trade_api as tradeapi
 
-load_dotenv()
+from env_config import BASE_DIR, get_env, get_path
 
-LEDGER_FILE = '/root/trade_hunter/trade_ledger.csv'
-ALPACA_API = tradeapi.REST(os.getenv('ALPACA_KEY'), os.getenv('ALPACA_SECRET'), 'https://paper-api.alpaca.markets', 'v2')
+load_dotenv(dotenv_path=BASE_DIR / '.env')
+
+LEDGER_FILE = get_path(get_env('LEDGER_FILE', default='trade_ledger.csv'))
+ALPACA_API = tradeapi.REST(get_env('ALPACA_API_KEY'), get_env('ALPACA_API_SECRET'), get_env('ALPACA_BASE_URL', 'https://paper-api.alpaca.markets'), 'v2')
 
 def get_price(ticker):
     """Fetches live price for valuation/exit checks."""

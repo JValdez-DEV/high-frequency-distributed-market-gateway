@@ -8,19 +8,20 @@ from alpaca.data.historical import CryptoHistoricalDataClient
 from alpaca.data.requests import CryptoBarsRequest
 from alpaca.data.timeframe import TimeFrame
 from crypto_sweep_engine import backtest_crypto_sweep_trades, CryptoSweepConfig
+from env_config import BASE_DIR, get_env, get_path
 
 # --- ENVIRONMENT & SECURE CREDENTIAL LOADING ---
-ENV_PATH = '/root/trade_hunter/.env'
-load_dotenv(ENV_PATH)
+ENV_PATH = BASE_DIR / '.env'
+load_dotenv(dotenv_path=ENV_PATH)
 
-API_KEY = os.getenv("ALPACA_API_KEY")
-SECRET_KEY = os.getenv("ALPACA_API_SECRET")
+API_KEY = get_env("ALPACA_API_KEY")
+SECRET_KEY = get_env("ALPACA_API_SECRET")
 
 if not API_KEY or not SECRET_KEY:
     print(f"\n[CRITICAL ERROR] Failed to load credentials from: {ENV_PATH}")
     raise SystemExit(1)
 
-DATA_DIR = "/root/trade_hunter/massive_data"
+DATA_DIR = get_path(get_env('DATA_DIR', default='massive_data'))
 LOOKBACK_DAYS = 180
 
 NEW_CRYPTO_TARGETS = {

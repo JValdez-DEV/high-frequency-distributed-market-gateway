@@ -5,14 +5,18 @@ import time
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+from env_config import BASE_DIR
+
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 # --- V3.6 MASTER DATA CONFIGURATION ---
 MASSIVE_API_KEY = os.getenv("MASSIVE_API_KEY")
 WATCHLIST = ["NVDA", "TSLA", "AMD", "MSFT", "X:BTCUSD", "X:ETHUSD", "X:SOLUSD"]
 DAYS_HISTORY = 180
 CHUNK_DAYS = 14  # Smaller chunks for 1m density to prevent timeout
-DATA_DIR = "/root/trade_hunter/massive_data"
+from env_config import get_env, get_path
+
+DATA_DIR = get_path(get_env('DATA_DIR', default='massive_data'))
 
 # We hoard 1m only. The Backtest Engine will resample this into 
 # your "best-performing" timeframes (5m, 15m, etc.) locally.

@@ -2,11 +2,13 @@ import os
 import requests
 from dotenv import load_dotenv
 
-# Load the environment variables from your droplet
-load_dotenv()
+from env_config import BASE_DIR, get_env
+
+# Load the environment variables from the local project root
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 def run_communication_audit():
-    webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
+    webhook_url = get_env("DISCORD_WEBHOOK_URL")
     
     if not webhook_url:
         print("[!] ERROR: DISCORD_WEBHOOK_URL not found in .env file.")

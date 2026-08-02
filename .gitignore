@@ -5,5 +5,7 @@
 *.json
 *.csv
 *.log
+.env
+.env.*
 __pycache__/
 venv/

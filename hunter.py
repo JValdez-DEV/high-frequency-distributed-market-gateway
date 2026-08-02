@@ -6,10 +6,12 @@ import ccxt
 import pandas as pd
 from dotenv import load_dotenv
 
+from env_config import BASE_DIR
+
 # =====================================================================
 # SYSTEM INITIALIZATION
 # =====================================================================
-load_dotenv()
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 SYMBOL = 'BTC/USDT'
 TIMEFRAME = '5m'

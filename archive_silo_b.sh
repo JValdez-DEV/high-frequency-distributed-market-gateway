@@ -4,7 +4,7 @@
 # ==============================================================================
 
 # Define paths
-PROJECT_DIR="/root/trade_hunter"
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 TIMESTAMP=$(date +"%Y-%m-%d_%H%M")
 ARCHIVE_DIR="${PROJECT_DIR}/archive_silo_b_${TIMESTAMP}"
 

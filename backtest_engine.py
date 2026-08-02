@@ -3,8 +3,10 @@ import pandas_ta as ta
 import glob
 import os
 
+from env_config import BASE_DIR, get_env, get_path
+
 # --- V3.6 ROUTING, RISK & ANALYST CONFIG ---
-DATA_DIR = "/root/trade_hunter/massive_data"
+DATA_DIR = get_path(get_env('DATA_DIR', default='massive_data'))
 RISK_PCT = 0.01
 REWARD_MULTIPLIER = 4.0
 

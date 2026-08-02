@@ -6,7 +6,9 @@ import gc
 from datetime import datetime, timedelta
 
 # --- CONFIGURATION ---
-DATA_DIR = "/root/trade_hunter/massive_data"
+from env_config import get_env, get_path
+
+DATA_DIR = get_path(get_env('DATA_DIR', default='massive_data'))
 TIMEFRAMES = ["1min", "3min", "5min", "15min", "1h"]
 RISK_PCT = 0.01
 REWARD_MULT = 4.0

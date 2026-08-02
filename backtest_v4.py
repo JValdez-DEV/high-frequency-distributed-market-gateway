@@ -4,8 +4,10 @@ import pandas as pd
 import pandas_ta as ta
 from dotenv import load_dotenv
 
-load_dotenv()
-api = tradeapi.REST(os.getenv('ALPACA_KEY'), os.getenv('ALPACA_SECRET'), 'https://paper-api.alpaca.markets', 'v2')
+from env_config import BASE_DIR, get_env, get_path
+
+load_dotenv(dotenv_path=BASE_DIR / '.env')
+api = tradeapi.REST(get_env('ALPACA_API_KEY'), get_env('ALPACA_API_SECRET'), get_env('ALPACA_BASE_URL', 'https://paper-api.alpaca.markets'), 'v2')
 
 # Configuration
 STOCKS = ['NVDA', 'AMD', 'AAPL', 'TSLA', 'MSFT', 'QQQ']

@@ -3,14 +3,16 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import alpaca_trade_api as tradeapi
 
-load_dotenv()
+from env_config import BASE_DIR, get_env, get_path
 
-CSV_FILE = '/root/trade_hunter/trade_ledger.csv'
+load_dotenv(dotenv_path=BASE_DIR / '.env')
+
+CSV_FILE = get_path(get_env('LEDGER_FILE', default='trade_ledger.csv'))
 STOCKS = ['NVDA', 'TSLA', 'AMD', 'MSFT']
 STRATEGY = "V4.7 HYBRID PERCOCO"
 
 # Initialize Alpaca API
-api = tradeapi.REST(os.getenv('ALPACA_KEY'), os.getenv('ALPACA_SECRET'), 'https://paper-api.alpaca.markets', 'v2')
+api = tradeapi.REST(get_env('ALPACA_API_KEY'), get_env('ALPACA_API_SECRET'), get_env('ALPACA_BASE_URL', 'https://paper-api.alpaca.markets'), 'v2')
 last_alert = {symbol: None for symbol in STOCKS}
 
 def log_trade(ticker, price, sl):

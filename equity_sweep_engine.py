@@ -1,4 +1,4 @@
-# /root/trade_hunter/equity_sweep_engine.py
+# Equity sweep engine
 from alpaca.trading.requests import MarketOrderRequest, TakeProfitRequest, StopLossRequest
 from alpaca.trading.enums import OrderSide, TimeInForce, OrderClass
 

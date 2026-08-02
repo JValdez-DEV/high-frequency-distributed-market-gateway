@@ -2,8 +2,10 @@ import pandas as pd
 import os
 import sys
 
+from env_config import get_env, get_path
+
 def run_audit(mode="LIVE"):
-    file_path = '/root/trade_hunter/backtest_ledger.csv' if mode == "BACKTEST" else '/root/trade_hunter/trade_ledger.csv'
+    file_path = get_path(get_env('BACKTEST_LEDGER', default='backtest_ledger.csv')) if mode == "BACKTEST" else get_path(get_env('LEDGER_FILE', default='trade_ledger.csv'))
     title = "180-DAY BACKTEST" if mode == "BACKTEST" else "LIVE PAPER TRADES"
     
     print(f"\n[INITIATING {mode} LEDGER AUDIT...]")

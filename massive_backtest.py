@@ -6,8 +6,10 @@ from datetime import timedelta
 import pandas as pd
 import pandas_ta as ta
 
+from env_config import get_env, get_path
+
 # --- CONFIGURATION ---
-DATA_DIR = "/root/trade_hunter/massive_data"
+DATA_DIR = get_path(get_env('DATA_DIR', default='massive_data'))
 RISK_PCT = 0.01
 REWARD_MULT = 4.0
 CONFIG_FILE = "ticker_config.json"

@@ -6,10 +6,12 @@ import pandas as pd
 import numpy as np
 from typing import Dict, Any, List
 
+from env_config import BASE_DIR, get_env, get_path
+
 # --- PATH CONFIGURATION ---
-LEDGER_PATH = "/root/trade_hunter/trade_ledger.csv"
-METRICS_OUTPUT = "/root/trade_hunter/graduation_report.json"
-ENV_PATH = "/root/trade_hunter/.env"
+LEDGER_PATH = get_path(get_env('LEDGER_FILE', default='trade_ledger.csv'))
+METRICS_OUTPUT = get_path(get_env('METRICS_OUTPUT', default='graduation_report.json'))
+ENV_PATH = BASE_DIR / '.env'
 
 # --- GRADUATION THRESHOLDS ---
 MIN_TRADES = 30

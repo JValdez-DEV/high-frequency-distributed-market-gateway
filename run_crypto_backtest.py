@@ -5,7 +5,9 @@ import pandas as pd
 from crypto_sweep_engine import backtest_crypto_sweep_trades, CryptoSweepConfig
 
 # --- CONFIGURATION ---
-DATA_DIR = "/root/trade_hunter/massive_data"
+from env_config import get_env, get_path
+
+DATA_DIR = get_path(get_env('DATA_DIR', default='massive_data'))
 CRYPTO_FILES = sorted(glob.glob(os.path.join(DATA_DIR, "X_*_1m_master.csv")))
 
 def run_macro_sweep():

@@ -2,7 +2,9 @@ import os, time, csv, pandas as pd, pandas_ta as ta
 from datetime import datetime
 import requests
 
-CSV_FILE = '/root/trade_hunter/trade_ledger.csv'
+from env_config import BASE_DIR, get_env, get_path
+
+CSV_FILE = get_path(get_env('LEDGER_FILE', default='trade_ledger.csv'))
 CRYPTO = ['XBTUSD', 'ETHUSD', 'SOLUSD', 'ADAUSD', 'DOTUSD', 'MATICUSD']
 STRATEGY = "V4.8 SAFE PERCOCO"
 STARTING_CASH = 10000.00  # Your fixed cap

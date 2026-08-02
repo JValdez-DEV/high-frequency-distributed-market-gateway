@@ -5,8 +5,10 @@ import ccxt
 import pandas as pd
 from dotenv import load_dotenv
 
+from env_config import BASE_DIR
+
 # Load environment variables (Strict zero-trust protocol)
-load_dotenv()
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 class SentinelAgent:
     def __init__(self):

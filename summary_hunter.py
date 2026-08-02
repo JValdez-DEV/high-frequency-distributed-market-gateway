@@ -2,7 +2,9 @@ import pandas as pd
 import os
 from datetime import datetime
 
-LEDGER_FILE = '/root/trade_hunter/trade_ledger.csv'
+from env_config import get_env, get_path
+
+LEDGER_FILE = get_path(get_env('LEDGER_FILE', default='trade_ledger.csv'))
 
 def generate_daily_report():
     if not os.path.exists(LEDGER_FILE):

@@ -1,4 +1,4 @@
-# /root/trade_hunter/crypto_sweep_engine.py
+# Crypto sweep engine
 from alpaca.trading.requests import MarketOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
 
